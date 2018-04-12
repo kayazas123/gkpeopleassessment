@@ -1,11 +1,14 @@
 package com.gk.assessment.gkassessment.web.domain.backend;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * Created by AYAZ on 12/04/2018.
@@ -25,6 +28,12 @@ public class User implements Serializable{
 
     @Column
     private String password;
+
+    @CreationTimestamp
+    private LocalDateTime auditCreateDate;
+
+    @UpdateTimestamp
+    private LocalDateTime auditModifyDate;
 
     public Long getId() {
 	return id;
@@ -58,38 +67,20 @@ public class User implements Serializable{
 	this.password = password;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-	if (this == o) {
-	    return true;
-	}
-	if (o == null || getClass() != o.getClass()) {
-	    return false;
-	}
 
-	User user = (User) o;
-
-	if (id != null ? !id.equals(user.id) : user.id != null) {
-	    return false;
-	}
-	if (userName != null ? !userName.equals(user.userName) : user.userName != null) {
-	    return false;
-	}
-	if (phone != null ? !phone.equals(user.phone) : user.phone != null) {
-	    return false;
-	}
-	return password != null ? password.equals(user.password) : user.password == null;
-
+    public LocalDateTime getAuditCreateDate() {
+	return auditCreateDate;
     }
 
-    @Override
-    public int hashCode() {
-	int result = id != null ? id.hashCode() : 0;
-	result = 31 * result + (userName != null ? userName.hashCode() : 0);
-	result = 31 * result + (phone != null ? phone.hashCode() : 0);
-	result = 31 * result + (password != null ? password.hashCode() : 0);
-	return result;
+    public void setAuditCreateDate(final LocalDateTime auditCreateDate) {
+	this.auditCreateDate = auditCreateDate;
     }
 
+    public LocalDateTime getAuditModifyDate() {
+	return auditModifyDate;
+    }
 
+    public void setAuditModifyDate(final LocalDateTime auditModifyDate) {
+	this.auditModifyDate = auditModifyDate;
+    }
 }
