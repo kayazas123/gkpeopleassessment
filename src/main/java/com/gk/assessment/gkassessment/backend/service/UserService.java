@@ -1,7 +1,7 @@
 package com.gk.assessment.gkassessment.backend.service;
 
 import com.gk.assessment.gkassessment.backend.persistence.repositories.UserRepository;
-import com.gk.assessment.gkassessment.web.domain.backend.User;
+import com.gk.assessment.gkassessment.web.domain.frontend.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

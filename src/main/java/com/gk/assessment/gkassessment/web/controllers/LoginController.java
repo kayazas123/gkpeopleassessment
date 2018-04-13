@@ -18,5 +18,4 @@ public class LoginController {
 	LOG.info("Redirecting to {}",LOGIN_VIEW_NAME);
 	return LOGIN_VIEW_NAME;
     }
-
 }

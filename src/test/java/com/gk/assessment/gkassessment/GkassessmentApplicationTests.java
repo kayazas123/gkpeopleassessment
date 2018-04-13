@@ -1,7 +1,6 @@
 package com.gk.assessment.gkassessment;
 
 import com.gk.assessment.gkassessment.backend.persistence.repositories.UserRepository;
-import com.gk.assessment.gkassessment.web.domain.backend.User;
 import com.gk.assessment.gkassessment.web.i18n.I18NService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -43,16 +42,5 @@ public class GkassessmentApplicationTests {
 	    String actual = i18NService.getMessage(messageId);
 	    Assert.assertEquals("The actual and expected Strings dont match",expectedResult,actual);
 	}
-
-	@Test
-    	public void testUserInsert(){
-		User user = new User();
-	    	user.setUserName("TestUser1");
-	    	user.setPassword("password");
-	    	user.setPhone("123456789");
-	    	userRepository.save(user);
-	}
-
-
 
 }

@@ -1,6 +1,6 @@
 package com.gk.assessment.gkassessment.backend.persistence.repositories;
 
-import com.gk.assessment.gkassessment.web.domain.backend.User;
+import com.gk.assessment.gkassessment.web.domain.frontend.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends CrudRepository<User,Long>{
+
+    public User findByUsername(String username);
 
 }
