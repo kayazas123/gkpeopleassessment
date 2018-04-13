@@ -29,10 +29,9 @@ public class GkassessmentApplication implements CommandLineRunner {
 
     @Override
     public void run(final String... strings) throws Exception {
-	User user = UserUtils.createBasicUser("gk","test@gk.co.za");
+	User user = UserUtils.createBasicUser("gk","admin@gk.co.za");
 	Set<UserRole> userRoles = new HashSet<>();
 	userRoles.add(new UserRole(user,new Role(RolesEnum.ADMIN)));
 	userService.createUser(user,userRoles);
-
     }
 }

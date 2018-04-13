@@ -31,12 +31,12 @@ public class UserUtils {
         user.setUsername(username);
         user.setPassword("secret");
         user.setEmail(email);
-        user.setFirstName("firstName");
-        user.setLastName("lastName");
+        user.setFirstName("admin");
+        user.setLastName("admin");
         user.setPhoneNumber("123456789123");
         user.setCountry("ZA");
         user.setEnabled(true);
-        user.setDescription("A basic user");
+        user.setDescription("A admin user");
         user.setProfileImageUrl(null);
         return user;
     }
