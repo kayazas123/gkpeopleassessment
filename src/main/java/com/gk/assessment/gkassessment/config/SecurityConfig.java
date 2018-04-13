@@ -43,13 +43,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserSecurityService userSecurityService;
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+	return new BCryptPasswordEncoder(12,new SecureRandom(SALT.getBytes()));
+    }
+
+    /** The encryption SALT. */
+    private static final String SALT = "fdalkjalk;3jlwf00sfaof";
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 	List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
 
 	// Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
-	http.csrf().disable()
-	    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+	http.csrf().disable();
+	http.headers().frameOptions().disable();
+
+	http
 	    .authorizeRequests()
 	    .antMatchers(PUBLIC_MATCHERS).permitAll()
 	    .anyRequest().authenticated().and()
@@ -76,8 +86,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 */
     }
 
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	auth.userDetailsService(userSecurityService);
+	auth.userDetailsService(userSecurityService).passwordEncoder(passwordEncoder());
     }
 }

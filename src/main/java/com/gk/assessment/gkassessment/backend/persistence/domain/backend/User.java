@@ -10,7 +10,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Created by tedonema on 28/03/2016.
+ */
 @Entity
 public class User implements Serializable, UserDetails {
 
@@ -53,7 +55,7 @@ public class User implements Serializable, UserDetails {
 
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
     @OneToMany(
@@ -200,22 +202,6 @@ public class User implements Serializable, UserDetails {
         return (int) (id ^ (id >>> 32));
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-            "id=" + id +
-            ", username='" + username + '\'' +
-            ", password='" + password + '\'' +
-            ", email='" + email + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", phoneNumber='" + phoneNumber + '\'' +
-            ", description='" + description + '\'' +
-            ", country='" + country + '\'' +
-            ", profileImageUrl='" + profileImageUrl + '\'' +
-            ", enabled=" + enabled +
-            ", userRoles=" + userRoles +
-            '}';
-    }
+
 }
 

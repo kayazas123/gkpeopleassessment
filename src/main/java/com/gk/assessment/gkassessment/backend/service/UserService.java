@@ -8,6 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,15 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
 
     @Transactional
     public void  createUser(User user,Set<UserRole> userRoleSet){
-	LOG.info("Persising user {} and roles {} "+user,userRoleSet);
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        LOG.info("Persising user {} and roles {} "+user,userRoleSet);
         for(UserRole userRole:userRoleSet){
             roleRepository.save(userRole.getRole());
             LOG.info("Persisted Role -> {}",userRole.getId());
