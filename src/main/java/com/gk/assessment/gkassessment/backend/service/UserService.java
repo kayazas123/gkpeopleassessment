@@ -1,7 +1,12 @@
 package com.gk.assessment.gkassessment.backend.service;
 
+import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
+import com.gk.assessment.gkassessment.backend.persistence.domain.backend.UserRole;
+import com.gk.assessment.gkassessment.backend.persistence.repositories.RoleRepository;
 import com.gk.assessment.gkassessment.backend.persistence.repositories.UserRepository;
-import com.gk.assessment.gkassessment.web.domain.frontend.User;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +18,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+
+
+
     @Transactional
-    public User addUser(User user){
-	user = userRepository.save(user);
-	return user;
+    public void  createUser(User user,Set<UserRole> userRoleSet){
+	LOG.info("Persising user {} and roles {} "+user,userRoleSet);
+        for(UserRole userRole:userRoleSet){
+            roleRepository.save(userRole.getRole());
+            LOG.info("Persisted Role -> {}",userRole.getId());
+        }
+        user = userRepository.save(user);
+        LOG.info("Persisted User {} ",user);
+
     }
+
+
 
 }

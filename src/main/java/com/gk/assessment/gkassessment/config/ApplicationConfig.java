@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.gk.assessment.gkassessment.backend.persistence.repositories")
-@EntityScan("com.gk.assessment.gkassessment.web.domain.frontend")
+@EntityScan("com.gk.assessment.gkassessment.backend.persistence.domain.backend")
 @EnableTransactionManagement
 public class ApplicationConfig {
 }
