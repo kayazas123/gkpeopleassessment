@@ -1,6 +1,7 @@
 package com.gk.assessment.gkassessment.config;
 
 import com.gk.assessment.gkassessment.backend.service.UserSecurityService;
+import com.gk.assessment.gkassessment.web.controllers.SignupController;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	"/",
 	"/users/**",
 	"/error/**",
-	"/console/**"
+	"/console/**",
+	SignupController.SIGNUP_URL_MAPPING
     };
     @Autowired
     private Environment env;

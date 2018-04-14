@@ -49,11 +49,11 @@ public class UserUtils {
     public static <T extends BasicAccountPayload> User fromWebUserToDomainUser(T webUser) {
         User user = new User();
         user.setUsername(webUser.getUsername());
-        user.setFirstName(webUser.getFirstname());
-        user.setLastName(webUser.getLastname());
+        user.setFirstName(webUser.getFirstName());
+        user.setLastName(webUser.getLastName());
         user.setEmail(webUser.getEmail());
         user.setCountry(webUser.getCountry());
-        user.setPhoneNumber(webUser.getPhonenumber());
+        user.setPhoneNumber(webUser.getPhoneNumber());
         user.setEnabled(true);
         return user;
     }

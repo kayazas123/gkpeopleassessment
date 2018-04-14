@@ -16,17 +16,21 @@ public class BasicAccountPayload implements Serializable{
     private String password;
 
     @NotNull
-    private String firstname;
+    private String confirmPassword;
+
 
     @NotNull
-    private String lastname;
+    private String firstName;
+
+    @NotNull
+    private String lastName;
 
     @NotNull
     @Email
     private String email;
 
     @NotNull
-    private String phonenumber;
+    private String phoneNumber;
 
     @NotNull
     private String country;
@@ -50,21 +54,14 @@ public class BasicAccountPayload implements Serializable{
 	this.password = password;
     }
 
-    public String getFirstname() {
-	return firstname;
+    public String getConfirmPassword() {
+	return confirmPassword;
     }
 
-    public void setFirstname(final String firstname) {
-	this.firstname = firstname;
+    public void setConfirmPassword(final String confirmPassword) {
+	this.confirmPassword = confirmPassword;
     }
 
-    public String getLastname() {
-	return lastname;
-    }
-
-    public void setLastname(final String lastname) {
-	this.lastname = lastname;
-    }
 
     public String getEmail() {
 	return email;
@@ -72,14 +69,6 @@ public class BasicAccountPayload implements Serializable{
 
     public void setEmail(final String email) {
 	this.email = email;
-    }
-
-    public String getPhonenumber() {
-	return phonenumber;
-    }
-
-    public void setPhonenumber(final String phonenumber) {
-	this.phonenumber = phonenumber;
     }
 
     public String getCountry() {
@@ -98,48 +87,29 @@ public class BasicAccountPayload implements Serializable{
 	this.description = description;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-	if (this == o) {
-	    return true;
-	}
-	if (o == null || getClass() != o.getClass()) {
-	    return false;
-	}
-
-	BasicAccountPayload that = (BasicAccountPayload) o;
-
-	if (!username.equals(that.username)) {
-	    return false;
-	}
-	if (!password.equals(that.password)) {
-	    return false;
-	}
-	if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) {
-	    return false;
-	}
-	if (lastname != null ? !lastname.equals(that.lastname) : that.lastname != null) {
-	    return false;
-	}
-	if (email != null ? !email.equals(that.email) : that.email != null) {
-	    return false;
-	}
-	if (!phonenumber.equals(that.phonenumber)) {
-	    return false;
-	}
-	return country != null ? country.equals(that.country) : that.country == null;
-
+    public String getFirstName() {
+	return firstName;
     }
 
-    @Override
-    public int hashCode() {
-	int result = username.hashCode();
-	result = 31 * result + password.hashCode();
-	result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
-	result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
-	result = 31 * result + (email != null ? email.hashCode() : 0);
-	result = 31 * result + phonenumber.hashCode();
-	result = 31 * result + (country != null ? country.hashCode() : 0);
-	return result;
+    public void setFirstName(final String firstName) {
+	this.firstName = firstName;
     }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(final String lastName) {
+	this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+	return phoneNumber;
+    }
+
+    public void setPhoneNumber(final String phoneNumber) {
+	this.phoneNumber = phoneNumber;
+    }
+
+
 }

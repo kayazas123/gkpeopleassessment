@@ -34,10 +34,10 @@ public class UserUtilsUnitTest {
         Assert.assertNotNull(user);
 
         Assert.assertEquals(webUser.getUsername(),user.getUsername());
-        Assert.assertEquals(webUser.getFirstname(),user.getFirstName());
-        Assert.assertEquals(webUser.getLastname(),user.getLastName());
+        Assert.assertEquals(webUser.getFirstName(),user.getFirstName());
+        Assert.assertEquals(webUser.getLastName(),user.getLastName());
         Assert.assertEquals(webUser.getEmail(),user.getEmail());
-        Assert.assertEquals(webUser.getPhonenumber(),user.getPhoneNumber());
+        Assert.assertEquals(webUser.getPhoneNumber(),user.getPhoneNumber());
         Assert.assertEquals(webUser.getCountry(),user.getCountry());
 
     }
