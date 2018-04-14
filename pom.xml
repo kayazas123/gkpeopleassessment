@@ -26,7 +26,6 @@
 		<java.version>1.8</java.version>
 		<findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
 		<findbugs.version>3.0.1</findbugs.version>
-		<jwt.version>0.9.0</jwt.version>
 	</properties>
 
 	<dependencies>
@@ -82,11 +81,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-data-redis</artifactId>
 			<version>2.0.2.RELEASE</version>
@@ -102,16 +96,24 @@
 			<artifactId>spring-web</artifactId>
 			<version>5.0.4.RELEASE</version>
 		</dependency>
+
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>${jwt.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.3.5.Final</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>findbugs</artifactId>
 			<version>${findbugs.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>uk.co.jemos.podam</groupId>
+			<artifactId>podam</artifactId>
+			<version>6.0.2.RELEASE</version>
+			<scope>test</scope>
 		</dependency>
 
 

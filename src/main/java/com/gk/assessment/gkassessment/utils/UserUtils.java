@@ -3,6 +3,7 @@ package com.gk.assessment.gkassessment.utils;
 import com.gk.assessment.gkassessment.backend.enums.RolesEnum;
 import com.gk.assessment.gkassessment.backend.persistence.domain.backend.Role;
 import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
+import com.gk.assessment.gkassessment.web.domain.frontend.BasicAccountPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,4 +45,18 @@ public class UserUtils {
     public static Role createBasicRole(RolesEnum rolesEnum){
         return new Role(rolesEnum);
     }
+
+    public static <T extends BasicAccountPayload> User fromWebUserToDomainUser(T webUser) {
+        User user = new User();
+        user.setUsername(webUser.getUsername());
+        user.setFirstName(webUser.getFirstname());
+        user.setLastName(webUser.getLastname());
+        user.setEmail(webUser.getEmail());
+        user.setCountry(webUser.getCountry());
+        user.setPhoneNumber(webUser.getPhonenumber());
+        user.setEnabled(true);
+        return user;
+    }
+
+
 }
