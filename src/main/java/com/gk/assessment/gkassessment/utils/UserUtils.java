@@ -37,8 +37,6 @@ public class UserUtils {
         user.setPhoneNumber("123456789123");
         user.setCountry("ZA");
         user.setEnabled(true);
-        user.setDescription("A admin user");
-        user.setProfileImageUrl(null);
         return user;
     }
 
@@ -53,6 +51,7 @@ public class UserUtils {
         user.setLastName(webUser.getLastName());
         user.setEmail(webUser.getEmail());
         user.setCountry(webUser.getCountry());
+        user.setPassword(webUser.getPassword());
         user.setPhoneNumber(webUser.getPhoneNumber());
         user.setEnabled(true);
         return user;

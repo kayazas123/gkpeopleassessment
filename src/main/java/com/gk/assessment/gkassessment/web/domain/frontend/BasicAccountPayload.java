@@ -35,9 +35,6 @@ public class BasicAccountPayload implements Serializable{
     @NotNull
     private String country;
 
-    @NotNull
-    private String description;
-
     public String getUsername() {
 	return username;
     }
@@ -79,14 +76,6 @@ public class BasicAccountPayload implements Serializable{
 	this.country = country;
     }
 
-    public String getDescription() {
-	return description;
-    }
-
-    public void setDescription(final String description) {
-	this.description = description;
-    }
-
     public String getFirstName() {
 	return firstName;
     }
@@ -111,5 +100,15 @@ public class BasicAccountPayload implements Serializable{
 	this.phoneNumber = phoneNumber;
     }
 
-
+    @Override
+    public String toString() {
+	return "BasicAccountPayload{" +
+	    "username='" + username + '\'' +
+	    ", firstName='" + firstName + '\'' +
+	    ", lastName='" + lastName + '\'' +
+	    ", email='" + email + '\'' +
+	    ", phoneNumber='" + phoneNumber + '\'' +
+	    ", country='" + country + '\'' +
+	    '}';
+    }
 }

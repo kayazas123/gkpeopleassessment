@@ -32,7 +32,7 @@ public class UserService {
 
 
     @Transactional
-    public void  createUser(User user,Set<UserRole> userRoleSet){
+    public User  createUser(User user,Set<UserRole> userRoleSet){
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
         LOG.info("Persising user {} and roles {} "+user,userRoleSet);
@@ -42,9 +42,15 @@ public class UserService {
         }
         user = userRepository.save(user);
         LOG.info("Persisted User {} ",user);
-
+        return user;
     }
 
+    public User findByUserName(String username){
+        return userRepository.findByUsername(username);
+    }
 
+    public User findByUserEmail(String email){
+        return userRepository.findByEmail(email);
+    }
 
 }

@@ -1,17 +1,22 @@
 package com.gk.assessment.gkassessment.backend.persistence.domain.backend;
 
-import org.hibernate.validator.constraints.Length;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Created by tedonema on 28/03/2016.
+ * Created by AYAZ on 12/04/2018
  */
 @Entity
 public class User implements Serializable, UserDetails {
@@ -45,13 +50,7 @@ public class User implements Serializable, UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Length(max = 500)
-    private String description;
-
     private String country;
-
-    @Column(name = "profile_image_url")
-    private String profileImageUrl;
 
     private boolean enabled;
 
@@ -114,28 +113,12 @@ public class User implements Serializable, UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getCountry() {
         return country;
     }
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
     }
 
     public boolean isEnabled() {

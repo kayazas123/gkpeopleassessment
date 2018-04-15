@@ -16,7 +16,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -34,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	"/js/**",
 	"/images/**",
 	"/",
-	"/users/**",
 	"/error/**",
+	"/contact/**",
 	"/console/**",
 	SignupController.SIGNUP_URL_MAPPING
     };
@@ -67,27 +68,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    .anyRequest().authenticated().and()
 	    .formLogin().loginPage("/login").defaultSuccessUrl("/users")
 	    .failureUrl("/login?error").permitAll().and()
-	    .logout().permitAll();
+	    .logout().permitAll()
+	    .and().sessionManagement().maximumSessions(1).expiredUrl("/login")
+	    .maxSessionsPreventsLogin(false)
+	    .sessionRegistry(sessionRegistry());
 
 	// disable page caching
 	http
 	    .headers()
 	    .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
 	    .cacheControl();
-
-/*
-	http
-	    .authorizeRequests()
-	    .antMatchers(PUBLIC_MATCHERS).permitAll()
-	    .anyRequest().authenticated()
-	    .and()
-	    .formLogin().loginPage("/login").defaultSuccessUrl("/users")
-	    .failureUrl("/login?error").permitAll()
-	    .and()
-	    .logout().permitAll();
-*/
     }
 
+    @Bean
+    public SessionRegistry sessionRegistry() {
+	SessionRegistry sessionRegistry = new SessionRegistryImpl();
+	return sessionRegistry;
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
