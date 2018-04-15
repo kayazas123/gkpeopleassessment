@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
  * Created by AYAZ on 12/04/2018.
@@ -51,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	return new BCryptPasswordEncoder(12,new SecureRandom(SALT.getBytes()));
     }
 
-    /** The encryption SALT. */
+    /** The encryption SALT. In real time we need to hide this*/
     private static final String SALT = "fdalkjalk;3jlwf00sfaof";
 
     @Override
@@ -70,8 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    .failureUrl("/login?error").permitAll().and()
 	    .logout().permitAll()
 	    .and().sessionManagement().maximumSessions(1).expiredUrl("/login")
-	    .maxSessionsPreventsLogin(false)
-	    .sessionRegistry(sessionRegistry());
+	    .maxSessionsPreventsLogin(false).sessionRegistry(sessionRegistry());
 
 	// disable page caching
 	http

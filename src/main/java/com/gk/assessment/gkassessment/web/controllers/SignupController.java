@@ -38,6 +38,8 @@ public class SignupController {
 
     public static final String SIGNUP_URL_MAPPING = "/signup";
     public static final String SUBSCRIPION_VIEW_NAME = "registration/signup";
+
+
     public static final String MODEL_KEY_NAME = "payload";
     public static final String DUPLICATED_USERNAME_KEY = "duplicatedUsername";
     public static final String DUPLICATED_EMAIL_KEY = "duplicatedEmail";
@@ -86,7 +88,7 @@ public class SignupController {
 	//Autologin registered users
 	authService.Authenticate(registeredUser);
 
-	LOG.info("User Created successfully {}",registeredUser);
+	LOG.info("User Created successfully {}",registeredUser.getUsername());
 	model.addAttribute(SIGNED_UP_MESSAGE_KEY,"true");
 
 

@@ -1,5 +1,6 @@
 package com.gk.assessment.gkassessment.registry;
 
+import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -7,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 
@@ -22,6 +23,7 @@ public class UsersSessionRegistry {
     @Autowired
     private SessionRegistry sessionRegistry;
 
+
     public List<SessionInformation> getActiveSessions()
     {
 	List<SessionInformation> activeSessions = new ArrayList<>();
@@ -32,14 +34,24 @@ public class UsersSessionRegistry {
     }
 
     public void removePreviousActiveSessionsForUser(String username,String currentSessionID){
-	for ( Object principal : sessionRegistry.getAllPrincipals() ){
-	    List<SessionInformation> activeSessions =  sessionRegistry.getAllSessions( username, false);
-	    for(SessionInformation sessionInformation:activeSessions){
-		if(sessionInformation.getSessionId() != currentSessionID)
-		    logoutSession(sessionInformation);
+	LOG.info("Find and retrive user={} sessionid={} sizeofPrincipals={}",username,currentSessionID,sessionRegistry.getAllPrincipals());
+	for (Object principal : sessionRegistry.getAllPrincipals()) {
+	    if (principal instanceof User) {
+		UserDetails userDetails = (UserDetails) principal;
+		LOG.info("UserDetails username={}",userDetails.getUsername());
+		if (userDetails.getUsername().equals(username)) {
+		    LOG.info("Retrieved session for user={}",username);
+		    for (SessionInformation information : sessionRegistry.getAllSessions(userDetails, true)) {
+			if(currentSessionID != information.getSessionId()) {
+			    LOG.info("Found session for username={} oldsession={} newsession={}", username, information.getSessionId(), currentSessionID);
+			    information.expireNow();
+			}
+		    }
+		}
 	    }
 	}
     }
+
 
     public User getUser( SessionInformation session )
     {
