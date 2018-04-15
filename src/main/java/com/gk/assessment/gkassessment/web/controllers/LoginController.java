@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Created by AYAZ on 12/04/2018.
@@ -18,9 +19,8 @@ public class LoginController {
     @Autowired
     private UsersSessionRegistry userSessionRegistry;
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(){
-	LOG.info("Redirecting to {}",LOGIN_VIEW_NAME);
 	return LOGIN_VIEW_NAME;
     }
 }

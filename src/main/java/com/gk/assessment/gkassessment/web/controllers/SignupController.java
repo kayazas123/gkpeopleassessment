@@ -47,7 +47,7 @@ public class SignupController {
     public static final String ERROR_MESSAGE_KEY = "message";
     public static final String GENERIC_ERROR_VIEW_NAME = "error/genericError";
 
-    @RequestMapping(value = SIGNUP_URL_MAPPING)
+    @RequestMapping(value = SIGNUP_URL_MAPPING,method = RequestMethod.GET)
     public String signupGet(ModelMap model){
 	LOG.info("Redirecting to "+SUBSCRIPION_VIEW_NAME);
 	model.addAttribute(MODEL_KEY_NAME,new BasicAccountPayload());
@@ -76,6 +76,7 @@ public class SignupController {
 
 	if(validationFailed){
 	    model.addAttribute(SIGNED_UP_MESSAGE_KEY,"false");
+	    model.addAttribute(ERROR_MESSAGE_KEY,errorMessages);
 	    return SUBSCRIPION_VIEW_NAME;
 	}
 

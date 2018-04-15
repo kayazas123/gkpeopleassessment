@@ -34,16 +34,12 @@ public class UsersSessionRegistry {
     }
 
     public void removePreviousActiveSessionsForUser(String username,String currentSessionID){
-	LOG.info("Find and retrive user={} sessionid={} sizeofPrincipals={}",username,currentSessionID,sessionRegistry.getAllPrincipals());
 	for (Object principal : sessionRegistry.getAllPrincipals()) {
 	    if (principal instanceof User) {
 		UserDetails userDetails = (UserDetails) principal;
-		LOG.info("UserDetails username={}",userDetails.getUsername());
 		if (userDetails.getUsername().equals(username)) {
-		    LOG.info("Retrieved session for user={}",username);
 		    for (SessionInformation information : sessionRegistry.getAllSessions(userDetails, true)) {
 			if(currentSessionID != information.getSessionId()) {
-			    LOG.info("Found session for username={} oldsession={} newsession={}", username, information.getSessionId(), currentSessionID);
 			    information.expireNow();
 			}
 		    }
@@ -51,26 +47,4 @@ public class UsersSessionRegistry {
 	    }
 	}
     }
-
-
-    public User getUser( SessionInformation session )
-    {
-	Object principalObj = session.getPrincipal();
-	if ( principalObj instanceof User )
-	{
-	    User user = (User) principalObj;
-	    return user;
-	}
-	return null;
-    }
-
-
-    public void logoutSession(SessionInformation sessionInformation) {
-	if (sessionInformation != null) {
-	    LOG.info("Removing session from list for user={} and sessionid={}",sessionInformation,sessionInformation.getPrincipal());
-	    sessionInformation.expireNow();
-	}
-    }
-
-
 }

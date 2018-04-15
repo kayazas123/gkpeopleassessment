@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	"/",
 	"/error/**",
 	"/contact/**",
+	"/api/**",
 	"/console/**",
 	SignupController.SIGNUP_URL_MAPPING
     };

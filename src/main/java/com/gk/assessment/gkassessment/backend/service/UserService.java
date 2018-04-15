@@ -4,6 +4,9 @@ import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
 import com.gk.assessment.gkassessment.backend.persistence.domain.backend.UserRole;
 import com.gk.assessment.gkassessment.backend.persistence.repositories.RoleRepository;
 import com.gk.assessment.gkassessment.backend.persistence.repositories.UserRepository;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +54,16 @@ public class UserService {
 
     public User findByUserEmail(String email){
         return userRepository.findByEmail(email);
+    }
+
+    public List<User> getUsersList(){
+        Iterator<User> userIterator = userRepository.findAll().iterator();
+        List<User> userList = new ArrayList<>();
+        while(userIterator.hasNext()){
+            User user = userIterator.next();
+            userList.add(user);
+        }
+        return userList;
     }
 
 }

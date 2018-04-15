@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
 
 </body>
@@ -23,10 +24,24 @@
 
       <ul class="nav navbar-nav navbar-right">
 
-        <li>
-          <a th:href="@{/login}" th:text="#{navbar.login.text}" />
-        </li>
-        
+
+
+        <ul class="nav navbar-nav navbar-right">
+
+          <li>
+            <p>Name: <span th:text="${session.user}">${session.user}</span>.</p>
+          </li>
+
+          <li th:if="${hasSession == 'false'}">
+            <a th:href="@{/login}" th:text="#{navbar.login.text}"></a>
+          </li>
+          <li th:if="${hasSession == 'true'}">
+            <form id="f" th:action="@{/logout}" method="post" role="form" class="navbar-form">
+              <button type="submit" th:text="#{navbar.logout.text}" class="btn btn-primary" />
+            </form>
+          </li>
+        </ul>
+
       </ul>
 
     </div><!--/.nav-collapse -->

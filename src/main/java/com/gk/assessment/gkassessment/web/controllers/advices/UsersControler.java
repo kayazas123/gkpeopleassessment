@@ -28,13 +28,13 @@ public class UsersControler {
 
     @RequestMapping(value = "/users",method = RequestMethod.GET)
     public String getUserUrl(Locale locale, Model model,HttpServletRequest request){
-	LOG.info("inside User URL");
 	if( request != null && request.getUserPrincipal() != null && request.getUserPrincipal().getName() != null) {
 	    userSessionRegistry.removePreviousActiveSessionsForUser(request.getUserPrincipal().getName(), RequestContextHolder.currentRequestAttributes().getSessionId());
 	}
 	List<SessionInformation> activeSessions = userSessionRegistry.getActiveSessions();
-	LOG.info("Active sessions size={}",activeSessions.size());
 	model.addAttribute("activeSessions", activeSessions);
+	model.addAttribute("hasSession", request.getSession(false) != null);
+
 	return USER_VIEW_NAME;
     }
 }
