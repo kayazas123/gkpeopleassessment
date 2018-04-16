@@ -1,27 +1,42 @@
 package com.gk.assessment.gkassessment.backend.service;
 
 
-import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by AYAZ on 14/04/2018.
  */
 @Service
-public class AuthService {
+public class AuthService implements AuthenticationProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
 
-    public void Authenticate(User user){
-	LOG.info("Logging in user {}",user.getUsername());
-	Authentication auth = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
-	SecurityContextHolder.getContext().setAuthentication(auth);
 
+    @Override
+    public Authentication authenticate(Authentication authentication)
+	throws AuthenticationException {
+
+	String name = authentication.getName();
+	String password = authentication.getCredentials().toString();
+
+	// use the credentials
+	// and authenticate against the third-party system
+	return new UsernamePasswordAuthenticationToken(
+		name, password, new ArrayList<>());
+
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+	return authentication.equals(
+	    UsernamePasswordAuthenticationToken.class);
     }
 
 }

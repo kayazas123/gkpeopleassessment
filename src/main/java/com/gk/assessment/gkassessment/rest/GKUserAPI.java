@@ -6,24 +6,31 @@ import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
 import com.gk.assessment.gkassessment.backend.persistence.domain.backend.UserRole;
 import com.gk.assessment.gkassessment.backend.service.AuthService;
 import com.gk.assessment.gkassessment.backend.service.UserService;
-import com.gk.assessment.gkassessment.exceptions.ErrorResponse;
+import com.gk.assessment.gkassessment.exceptions.UserAlreadyExistException;
+import com.gk.assessment.gkassessment.exceptions.UserNotFoundException;
+import com.gk.assessment.gkassessment.registry.UsersSessionRegistry;
 import com.gk.assessment.gkassessment.rest.params.AddUsersRequest;
 import com.gk.assessment.gkassessment.rest.params.LoginRequest;
 import com.gk.assessment.gkassessment.rest.params.LoginResponse;
+import com.gk.assessment.gkassessment.rest.params.LogoutRequest;
+import com.gk.assessment.gkassessment.rest.params.LogoutResponse;
 import com.gk.assessment.gkassessment.rest.params.UsersResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,28 +46,36 @@ public class GKUserAPI {
     private static final Logger LOG = LoggerFactory.getLogger(GKUserAPI.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
-    @RequestMapping(value = "/api/users",method = RequestMethod.GET)
+    @Autowired
+    private UsersSessionRegistry usersSessionRegistry;
+
+    @RequestMapping(value = "/api/users/user/{id}",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public UsersResponse getUser(@PathVariable Long id){
+	Optional<User> user = userService.getUser(id);
+	if(!user.isPresent()){
+	    throw new UserNotFoundException("User id "+id+" not found");
+	}
+	return mapResponse(user.get());
+    }
+
+
+    @RequestMapping(value = "/api/users",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UsersResponse> getUsers(){
 	List<User> userList = userService.getUsersList();
 	List<UsersResponse> responseList = new ArrayList<>();
 	for(User user:userList){
-	    UsersResponse response = new UsersResponse();
-	    response.setUserName(user.getUsername());
-	    response.setFirstName(user.getFirstName());
-	    response.setLastName(user.getLastName());
-	    response.setEmailAddress(user.getEmail());
-	    response.setPhoneNumber(user.getPhoneNumber());
-	    responseList.add(response);
+	    responseList.add(mapResponse(user));
 	}
 	return responseList;
     }
 
-    @RequestMapping(value = "/api/user/login/",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @RequestMapping(value = "/api/user/login",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginResponse login(@RequestBody LoginRequest loginRequest){
 	LOG.info("Inside login() -> ");
 	LoginResponse response = new LoginResponse();
@@ -68,7 +83,8 @@ public class GKUserAPI {
 	user.setUsername(loginRequest.getUserName());
 	user.setPassword(loginRequest.getPassWord());
 	try {
-	    authService.Authenticate(user);
+	    Authentication auth = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
+	    authService.authenticate(auth);
 	}catch (Exception e){
 	    LOG.error("Could not login due to",e);
 	}
@@ -77,10 +93,17 @@ public class GKUserAPI {
 	return response;
     }
 
+    @RequestMapping(value = "/api/user/logout",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public LogoutResponse logout(@RequestBody LogoutRequest session_token){
+	boolean isExpired = usersSessionRegistry.removeSessionFromSessionRegistry(session_token.getToken());
+	LOG.info("Session expired={}",isExpired);
+	return new LogoutResponse(session_token.getToken());
+    }
+
+
 
     @RequestMapping(value = "/api/user/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createUser(@RequestBody AddUsersRequest addUsersRequest){
-	LOG.info("Inside createUser() -> "+addUsersRequest);
 	User user = new User();
 	user.setUsername(addUsersRequest.getUsername());
 	user.setPassword(addUsersRequest.getPassword());
@@ -90,28 +113,29 @@ public class GKUserAPI {
 	user.setPhoneNumber(addUsersRequest.getPhoneNumber());
 
 	Set<UserRole> userRoles = new HashSet<>();
-	userRoles.add(new UserRole(user,new Role(RolesEnum.ADMIN)));
+	userRoles.add(new UserRole(user,new Role(RolesEnum.BASIC)));
 	try {
 	    User registeredUser = userService.createUser(user, userRoles);
-	    return new ResponseEntity<User>(registeredUser, HttpStatus.OK);
-
+	    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+	    LOG.info("location uri created");
+	    return ResponseEntity.created(location).build();
 	}catch (ConstraintViolationException cve){
 	    LOG.error("User Already Exist",cve);
+	    throw new UserAlreadyExistException("id - "+addUsersRequest.getUsername());
+	}catch (DataIntegrityViolationException dive){
+	    LOG.error("User Already Exist",dive);
+	    throw new UserAlreadyExistException("id - "+addUsersRequest.getUsername());
 	}
-
-	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-	return ResponseEntity.created(location).build();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
-	ErrorResponse error = new ErrorResponse();
-	error.setErrorResponse(HttpStatus.PRECONDITION_FAILED.value());
-	error.setMessage(ex.getMessage());
-	return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+    private UsersResponse mapResponse(User user){
+	UsersResponse response = new UsersResponse();
+	response.setUserName(user.getUsername());
+	response.setFirstName(user.getFirstName());
+	response.setLastName(user.getLastName());
+	response.setEmailAddress(user.getEmail());
+	response.setPhoneNumber(user.getPhoneNumber());
+	return response;
     }
-
-
-
 
 }

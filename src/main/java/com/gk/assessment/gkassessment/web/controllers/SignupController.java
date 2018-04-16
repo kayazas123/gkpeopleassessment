@@ -87,7 +87,7 @@ public class SignupController {
 	User registeredUser = userService.createUser(user,userRoleSet);
 
 	//Autologin registered users
-	authService.Authenticate(registeredUser);
+	//authService.authenticate(registeredUser);
 
 	LOG.info("User Created successfully {}",registeredUser.getUsername());
 	model.addAttribute(SIGNED_UP_MESSAGE_KEY,"true");

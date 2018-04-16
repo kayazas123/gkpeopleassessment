@@ -2,6 +2,7 @@ package com.gk.assessment.gkassessment.registry;
 
 import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,11 @@ public class UsersSessionRegistry {
     @Autowired
     private SessionRegistry sessionRegistry;
 
-
-    public List<SessionInformation> getActiveSessions()
-    {
+    /**
+     *
+     * @return
+     */
+    public List<SessionInformation> getActiveSessions(){
 	List<SessionInformation> activeSessions = new ArrayList<>();
 	for ( Object principal : sessionRegistry.getAllPrincipals() ){
 	    activeSessions.addAll( sessionRegistry.getAllSessions( principal, false ) );
@@ -33,18 +36,78 @@ public class UsersSessionRegistry {
 	return activeSessions;
     }
 
+    /**
+     *
+     * @param username
+     * @param currentSessionID
+     */
     public void removePreviousActiveSessionsForUser(String username,String currentSessionID){
+	List<SessionInformation> sessionInformationList = getSessionInformationForUser(username);
+	for (SessionInformation information : sessionInformationList) {
+	    if(currentSessionID != information.getSessionId()) {
+		information.expireNow();
+	    }
+	}
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    private List<SessionInformation> getSessionInformationForUser(String username){
 	for (Object principal : sessionRegistry.getAllPrincipals()) {
 	    if (principal instanceof User) {
 		UserDetails userDetails = (UserDetails) principal;
 		if (userDetails.getUsername().equals(username)) {
-		    for (SessionInformation information : sessionRegistry.getAllSessions(userDetails, true)) {
-			if(currentSessionID != information.getSessionId()) {
-			    information.expireNow();
-			}
+		    LOG.info("SizeOf current sessions in sessionRegistry="+sessionRegistry.getAllSessions(userDetails,false).size());
+		    return sessionRegistry.getAllSessions(userDetails,false);
+		}
+	    }
+	}
+	return Collections.emptyList();
+    }
+
+
+    /**
+     *
+     * @param username
+     */
+    public void removeCurrentActiveSessionsForUser(String username){
+	LOG.info("Removing current session from sessionregistry for currentSessionID={}",username);
+	List<SessionInformation> sessionInformationList = getSessionInformationForUser(username);
+	if(sessionInformationList.size() == 1){
+	    LOG.info("User had only one session ..");
+	    sessionInformationList.get(0).expireNow();
+	}else if(sessionInformationList.size() > 1){
+	    LOG.info("Morethan 1 session found, expire one session");
+	    Collections.sort(sessionInformationList, (o1,o2) -> o1.getLastRequest().compareTo(o2.getLastRequest()));
+	    sessionInformationList.get(0).expireNow();
+	}
+    }
+
+    /**
+     *
+     * @param sessionID
+     * @return
+     */
+    public boolean removeSessionFromSessionRegistry(String sessionID){
+	boolean sessionRemoved = false;
+	LOG.info("Removing session id {} from sessionRegistry",sessionID);
+	for (Object principal : sessionRegistry.getAllPrincipals()) {
+	    if (principal instanceof User) {
+		UserDetails userDetails = (UserDetails) principal;
+		for (SessionInformation information : sessionRegistry.getAllSessions(userDetails, false)) {
+		    LOG.info("{}={}",sessionID,information.getSessionId());
+		    if (sessionID.equals(information.getSessionId())) {
+			information.expireNow();
+			LOG.info("Removed session id {} from sessionRegistry",sessionID);
+			sessionRemoved = true;
+			sessionRegistry.removeSessionInformation(sessionID);
 		    }
 		}
 	    }
 	}
+	return sessionRemoved;
     }
 }

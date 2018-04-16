@@ -14,26 +14,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 
 /**
- * Created by AYAZ on 12/04/2018.
+ * Created by AYAZ on 16/04/2018.
  */
 @Controller
-public class UsersControler {
-    public static final String USER_VIEW_NAME = "user/users";
+public class LogoutController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UsersControler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogoutController.class);
 
     @Autowired
     private UsersSessionRegistry userSessionRegistry;
 
-    @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public String getUserUrl(Model model,HttpServletRequest request){
+    public static final String LOGIN_VIEW_NAME = "user/login?logout";
+
+    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    public String logout(Model model,HttpServletRequest request){
+	List<SessionInformation> activeSessions = userSessionRegistry.getActiveSessions();
+	LOG.info("Before logout Active sessions list="+activeSessions.size());
 	if( request != null && request.getUserPrincipal() != null && request.getUserPrincipal().getName() != null) {
 	    userSessionRegistry.removePreviousActiveSessionsForUser(request.getUserPrincipal().getName(), RequestContextHolder.currentRequestAttributes().getSessionId());
 	}
-	List<SessionInformation> activeSessions = userSessionRegistry.getActiveSessions();
-	LOG.info("Active sessions list="+activeSessions.size());
-	model.addAttribute("activeSessions", activeSessions);
-	model.addAttribute("hasSession", request.getSession(false) != null);
-	return USER_VIEW_NAME;
+	activeSessions = userSessionRegistry.getActiveSessions();
+	LOG.info("After logout Active sessions list="+activeSessions.size());
+	return LOGIN_VIEW_NAME;
     }
+
 }

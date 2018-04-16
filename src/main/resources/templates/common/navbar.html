@@ -29,13 +29,14 @@
         <ul class="nav navbar-nav navbar-right">
 
           <li>
-            <p>Name: <span th:text="${session.user}">${session.user}</span>.</p>
+            <p>Name: <span th:text="${currentUser}">${currentUser}</span>.</p>
           </li>
 
-          <li th:if="${hasSession == 'false'}">
+          <li th:if="${hasSession == null || hasSession == 'false'}">
             <a th:href="@{/login}" th:text="#{navbar.login.text}"></a>
           </li>
-          <li th:if="${hasSession == 'true'}">
+
+          <li th:if="${hasSession != null}">
             <form id="f" th:action="@{/logout}" method="post" role="form" class="navbar-form">
               <button type="submit" th:text="#{navbar.logout.text}" class="btn btn-primary" />
             </form>

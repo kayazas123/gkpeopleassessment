@@ -33,8 +33,8 @@
 
   <logger name="com.gk" level="debug" />
 
-  <logger name="com.gk.assessment" level="debug"/>
-  <logger name="org.springframework" level="debug" />
+  <logger name="com.gk.assessment" level="info"/>
+  <logger name="org.springframework" level="info" />
   <logger name="org.hibernate" level="warn" />
   <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="warn" />
   <logger name="org.springframework.web" level="info" />

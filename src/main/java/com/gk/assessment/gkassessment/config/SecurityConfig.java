@@ -1,6 +1,7 @@
 package com.gk.assessment.gkassessment.config;
 
 import com.gk.assessment.gkassessment.backend.service.UserSecurityService;
+import com.gk.assessment.gkassessment.handler.CustomLogoutSuccessHandler;
 import com.gk.assessment.gkassessment.web.controllers.SignupController;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -8,7 +9,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -20,7 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * Created by AYAZ on 12/04/2018.
@@ -40,11 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	"/error/**",
 	"/contact/**",
 	"/api/**",
+	"/api/user/**",
+	"/api/user/logout/*",
 	"/console/**",
 	SignupController.SIGNUP_URL_MAPPING
     };
-    @Autowired
-    private Environment env;
 
     @Autowired
     private UserSecurityService userSecurityService;
@@ -57,11 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** The encryption SALT. In real time we need to hide this*/
     private static final String SALT = "fdalkjalk;3jlwf00sfaof";
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-	List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
 
-	// Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
+	LOG.info("Login as Service");
 	http.csrf().disable();
 	http.headers().frameOptions().disable();
 
@@ -71,7 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    .anyRequest().authenticated().and()
 	    .formLogin().loginPage("/login").defaultSuccessUrl("/users")
 	    .failureUrl("/login?error").permitAll().and()
-	    .logout().permitAll()
+	    .logout()
+	    .deleteCookies()
+	    .clearAuthentication(true)
+	    .invalidateHttpSession(true)
+	    .logoutSuccessHandler(logoutSuccessHandler())
 	    .and().sessionManagement().maximumSessions(1).expiredUrl("/login")
 	    .maxSessionsPreventsLogin(false).sessionRegistry(sessionRegistry());
 
@@ -84,12 +88,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SessionRegistry sessionRegistry() {
-	SessionRegistry sessionRegistry = new SessionRegistryImpl();
-	return sessionRegistry;
+	return  new SessionRegistryImpl();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	auth.userDetailsService(userSecurityService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+	return new CustomLogoutSuccessHandler();
     }
 }
