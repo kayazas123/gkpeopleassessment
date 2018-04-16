@@ -32,9 +32,10 @@ public class UsersControler {
 	    userSessionRegistry.removePreviousActiveSessionsForUser(request.getUserPrincipal().getName(), RequestContextHolder.currentRequestAttributes().getSessionId());
 	}
 	List<SessionInformation> activeSessions = userSessionRegistry.getActiveSessions();
+	LOG.info("Active sessions list="+activeSessions.size());
 	model.addAttribute("activeSessions", activeSessions);
 	model.addAttribute("hasSession", request.getSession(false) != null);
-
+	LOG.info("hasSessoin={}",request.getSession(false) != null);
 	return USER_VIEW_NAME;
     }
 }
