@@ -18,16 +18,13 @@ public class AuthService implements AuthenticationProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
 
-
     @Override
     public Authentication authenticate(Authentication authentication)
 	throws AuthenticationException {
-
+	LOG.info("Authenticating {}",authentication);
 	String name = authentication.getName();
 	String password = authentication.getCredentials().toString();
 
-	// use the credentials
-	// and authenticate against the third-party system
 	return new UsernamePasswordAuthenticationToken(
 		name, password, new ArrayList<>());
 

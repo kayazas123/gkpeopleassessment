@@ -4,14 +4,12 @@ import com.gk.assessment.gkassessment.backend.service.UserSecurityService;
 import com.gk.assessment.gkassessment.handler.CustomLogoutSuccessHandler;
 import com.gk.assessment.gkassessment.web.controllers.SignupController;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,7 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	"/error/**",
 	"/contact/**",
 	"/api/**",
-	"/api/user/**",
+	"/api/users/**",
+	"/api/users/user",
+	"/api/user/login",
+	"/api/user/add",
 	"/api/user/logout/*",
 	"/console/**",
 	SignupController.SIGNUP_URL_MAPPING
@@ -50,11 +51,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserSecurityService userSecurityService;
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-	return new BCryptPasswordEncoder(12,new SecureRandom(SALT.getBytes()));
+    public BCryptPasswordEncoder passwordEncoder() {
+	return new BCryptPasswordEncoder(12, new SecureRandom(SALT.getBytes()));
     }
 
-    /** The encryption SALT. In real time we need to hide this*/
+    /**
+     * The encryption SALT. In real time we need to hide this
+     */
     private static final String SALT = "fdalkjalk;3jlwf00sfaof";
 
 
@@ -86,18 +89,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    .cacheControl();
     }
 
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+	return new CustomLogoutSuccessHandler();
+    }
+
     @Bean
     public SessionRegistry sessionRegistry() {
-	return  new SessionRegistryImpl();
+	return new SessionRegistryImpl();
     }
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	auth.userDetailsService(userSecurityService).passwordEncoder(passwordEncoder());
     }
 
-    @Bean
-    public LogoutSuccessHandler logoutSuccessHandler() {
-	return new CustomLogoutSuccessHandler();
-    }
+
 }

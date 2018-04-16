@@ -77,20 +77,23 @@ public class GKUserAPI {
 
     @RequestMapping(value = "/api/user/login",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginResponse login(@RequestBody LoginRequest loginRequest){
-	LOG.info("Inside login() -> ");
-	LoginResponse response = new LoginResponse();
+
+	LOG.info("Inside login() -> "+loginRequest.getUserName()+" "+loginRequest.getPassWord());
+	LoginResponse loginResponse = new LoginResponse();
 	User user = new User();
 	user.setUsername(loginRequest.getUserName());
 	user.setPassword(loginRequest.getPassWord());
 	try {
-	    Authentication auth = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
-	    authService.authenticate(auth);
+	    Authentication auth = new UsernamePasswordAuthenticationToken(user,user.getPassword(),user.getAuthorities());
+	    Authentication authenticate = authService.authenticate(auth);
+	    LOG.info("Is Authenticated=",auth.isAuthenticated());
+	    //authService.login(request,response,loginRequest.getUserName(),loginRequest.getPassWord());
 	}catch (Exception e){
 	    LOG.error("Could not login due to",e);
 	}
-	response.setId("Abc");
-	response.setSessionToken("asdfsefdsf");
-	return response;
+	loginResponse.setId("Abc");
+	loginResponse.setSessionToken("asdfsefdsf");
+	return loginResponse;
     }
 
     @RequestMapping(value = "/api/user/logout",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,8 +102,6 @@ public class GKUserAPI {
 	LOG.info("Session expired={}",isExpired);
 	return new LogoutResponse(session_token.getToken());
     }
-
-
 
     @RequestMapping(value = "/api/user/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createUser(@RequestBody AddUsersRequest addUsersRequest){

@@ -9,6 +9,7 @@ import com.gk.assessment.gkassessment.backend.persistence.repositories.RoleRepos
 import com.gk.assessment.gkassessment.backend.persistence.repositories.UserRepository;
 import com.gk.assessment.gkassessment.utils.UserUtils;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +42,8 @@ public class RepositoryIntegrationTest {
 
     @Test
     public void testUserPersist(){
-	User user = UserUtils.createBasicUser("gk","test@gk.co.za");
+	Random random = new Random();
+	User user = UserUtils.createBasicUser("gk"+ random.nextInt(500),"test+"+random.nextInt(100)+"+@gk.co.za");
 	Set<UserRole> userRoles = new HashSet<>();
 	userRoles.add(new UserRole(user,new Role(RolesEnum.BASIC)));
 	for(UserRole ur:userRoles){
