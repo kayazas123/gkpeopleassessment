@@ -92,17 +92,4 @@ public class UserDTO {
 	this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
-    @Override
-    public String toString() {
-	return "UserDTO{" +
-	    "username='" + username + '\'' +
-	    ", firstname='" + firstname + '\'' +
-	    ", lastname='" + lastname + '\'' +
-	    ", email='" + email + '\'' +
-	    ", phonenumber='" + phonenumber + '\'' +
-	    ", password='" + password + '\'' +
-	    ", enabled=" + enabled +
-	    ", lastPasswordResetDate=" + lastPasswordResetDate +
-	    '}';
-    }
 }

@@ -39,13 +39,13 @@ public class UserService {
     public User createUser(User user, Set<UserRole> userRoleSet) {
 	String encryptedPassword = passwordEncoder.encode(user.getPassword());
 	user.setPassword(encryptedPassword);
-	LOG.info("Persising user {} and roles {} " + user, userRoleSet);
+	LOG.debug("Persising user {} and roles {} " + user, userRoleSet);
 	for (UserRole userRole : userRoleSet) {
 	    roleRepository.save(userRole.getRole());
-	    LOG.info("Persisted Role -> {}", userRole.getId());
+	    LOG.debug("Persisted Role -> {}", userRole.getId());
 	}
 	user = userRepository.save(user);
-	LOG.info("Persisted User {} ", user);
+	LOG.debug("Persisted User {} ", user);
 	return user;
     }
 

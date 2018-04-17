@@ -78,7 +78,6 @@ public class GKUserAPI {
     @RequestMapping(value = "/api/user/login",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginResponse login(@RequestBody LoginRequest loginRequest){
 
-	LOG.info("Inside login() -> "+loginRequest.getUserName()+" "+loginRequest.getPassWord());
 	LoginResponse loginResponse = new LoginResponse();
 	User user = new User();
 	user.setUsername(loginRequest.getUserName());
@@ -91,15 +90,13 @@ public class GKUserAPI {
 	}catch (Exception e){
 	    LOG.error("Could not login due to",e);
 	}
-	loginResponse.setId("Abc");
-	loginResponse.setSessionToken("asdfsefdsf");
 	return loginResponse;
     }
 
     @RequestMapping(value = "/api/user/logout",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public LogoutResponse logout(@RequestBody LogoutRequest session_token){
 	boolean isExpired = usersSessionRegistry.removeSessionFromSessionRegistry(session_token.getToken());
-	LOG.info("Session expired={}",isExpired);
+	LOG.debug("Session expired={}",isExpired);
 	return new LogoutResponse(session_token.getToken());
     }
 
@@ -118,7 +115,7 @@ public class GKUserAPI {
 	try {
 	    User registeredUser = userService.createUser(user, userRoles);
 	    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-	    LOG.info("location uri created");
+	    LOG.debug("location uri created");
 	    return ResponseEntity.created(location).build();
 	}catch (ConstraintViolationException cve){
 	    LOG.error("User Already Exist",cve);

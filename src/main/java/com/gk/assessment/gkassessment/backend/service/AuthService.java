@@ -21,7 +21,7 @@ public class AuthService implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication)
 	throws AuthenticationException {
-	LOG.info("Authenticating {}",authentication);
+	LOG.debug("Authenticating {}",authentication);
 	String name = authentication.getName();
 	String password = authentication.getCredentials().toString();
 

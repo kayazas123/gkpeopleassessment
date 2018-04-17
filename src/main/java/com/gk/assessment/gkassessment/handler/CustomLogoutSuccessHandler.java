@@ -34,13 +34,11 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler im
     public void onLogoutSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException, ServletException {
 	List<SessionInformation> activeSessions = userSessionRegistry.getActiveSessions();
 	SecurityContextHolder.getContext().setAuthentication(null);
-	LOG.info("Before logout Active sessions list="+activeSessions.size());
+	LOG.debug("Before logout Active sessions list="+activeSessions.size());
 	userSessionRegistry.removeCurrentActiveSessionsForUser(authentication.getName());
-	//1FD9837BE69640205040707AD315BD3C
-	//9FC21EB3BBF5E5CEE6FFA423674CEFC4
 
 	activeSessions = userSessionRegistry.getActiveSessions();
-	LOG.info("After logout Active sessions list="+activeSessions.size());
+	LOG.debug("After logout Active sessions list="+activeSessions.size());
 	request.getSession().invalidate();
 	super.onLogoutSuccess(request, response, authentication);
     }

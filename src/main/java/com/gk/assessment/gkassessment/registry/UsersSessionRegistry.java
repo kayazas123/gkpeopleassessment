@@ -60,7 +60,7 @@ public class UsersSessionRegistry {
 	    if (principal instanceof User) {
 		UserDetails userDetails = (UserDetails) principal;
 		if (userDetails.getUsername().equals(username)) {
-		    LOG.info("SizeOf current sessions in sessionRegistry="+sessionRegistry.getAllSessions(userDetails,false).size());
+		    LOG.debug("SizeOf current sessions in sessionRegistry="+sessionRegistry.getAllSessions(userDetails,false).size());
 		    return sessionRegistry.getAllSessions(userDetails,false);
 		}
 	    }
@@ -74,13 +74,13 @@ public class UsersSessionRegistry {
      * @param username
      */
     public void removeCurrentActiveSessionsForUser(String username){
-	LOG.info("Removing current session from sessionregistry for currentSessionID={}",username);
+	LOG.debug("Removing current session from sessionregistry for currentSessionID={}",username);
 	List<SessionInformation> sessionInformationList = getSessionInformationForUser(username);
 	if(sessionInformationList.size() == 1){
-	    LOG.info("User had only one session ..");
+	    LOG.debug("User had only one session ..");
 	    sessionInformationList.get(0).expireNow();
 	}else if(sessionInformationList.size() > 1){
-	    LOG.info("Morethan 1 session found, expire one session");
+	    LOG.debug("Morethan 1 session found, expire one session");
 	    Collections.sort(sessionInformationList, (o1,o2) -> o1.getLastRequest().compareTo(o2.getLastRequest()));
 	    sessionInformationList.get(0).expireNow();
 	}
@@ -93,7 +93,7 @@ public class UsersSessionRegistry {
      */
     public boolean removeSessionFromSessionRegistry(String sessionID){
 	boolean sessionRemoved = false;
-	LOG.info("Removing session id {} from sessionRegistry",sessionID);
+	LOG.debug("Removing session id {} from sessionRegistry",sessionID);
 	for (Object principal : sessionRegistry.getAllPrincipals()) {
 	    if (principal instanceof User) {
 		UserDetails userDetails = (UserDetails) principal;
@@ -101,7 +101,7 @@ public class UsersSessionRegistry {
 		    LOG.info("{}={}",sessionID,information.getSessionId());
 		    if (sessionID.equals(information.getSessionId())) {
 			information.expireNow();
-			LOG.info("Removed session id {} from sessionRegistry",sessionID);
+			LOG.debug("Removed session id {} from sessionRegistry",sessionID);
 			sessionRemoved = true;
 			sessionRegistry.removeSessionInformation(sessionID);
 		    }
