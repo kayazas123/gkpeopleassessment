@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header :: common-header" />
+
+<body>
+
+<div th:replace="common/navbar :: common-navbar" />
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-md-12">
+
+      <div class="jumbotron">
+
+        <div class="text-center">
+          <p class="lead" th:text="#{login.successful}" />
+
+        </div>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">USERNAME</th>
+              <th scope="col">PHONE_NO</th>
+              <th scope="col">SESSIONID</th>
+              <th scope="col">LAST REQUEST</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="activeSession,iterationStatus : ${activeSessions}">
+              <td scope="row" th:text="${iterationStatus.count}">1</td>
+              <td scope="row" th:text="${activeSession.principal.username}">Username</td>
+              <td scope="row" th:text="${activeSession.principal.phoneNumber}">Phone No</td>
+              <td scope="row" th:text="${activeSession.sessionId}">Session ID</td>
+              <td scope="row"th:text="${activeSession.lastRequest}">Last Request</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<div th:replace="common/header :: before-body-scripts" />
+
+</body>
+</html>

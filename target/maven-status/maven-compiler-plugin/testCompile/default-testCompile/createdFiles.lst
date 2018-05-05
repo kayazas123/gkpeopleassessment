@@ -1,0 +1,4 @@
+com/gk/assessment/gkassessment/restassured/GKUserAPITest.class
+com/gk/assessment/gkassessment/GkassessmentApplicationTests.class
+com/gk/assessment/gkassessment/repositoryintegrationtest/RepositoryIntegrationTest.class
+com/gk/assessment/gkassessment/unit/UserUtilsUnitTest.class

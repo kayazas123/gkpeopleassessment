@@ -20,3 +20,10 @@ Select the right project
 Choose the Spring Boot Application file (search for @SpringBootApplication)
 
 Right Click on the file and Run as Java Application
+
+#Docker Build
+docker build -f Dockerfile -t gkassessment .
+docker images 9090:9090 gkassessment
+
+#Push application
+docker run -p 9090:9090 gkassessment
