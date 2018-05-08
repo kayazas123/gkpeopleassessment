@@ -11,11 +11,11 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 public class I18NConfig {
 
     @Bean
-    public ReloadableResourceBundleMessageSource messageSource(){
-	ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource = new ReloadableResourceBundleMessageSource();
-	reloadableResourceBundleMessageSource.setBasename("classpath:i18n/messages");
-	//30 Minutes
-	reloadableResourceBundleMessageSource.setCacheSeconds(1800);
-	return reloadableResourceBundleMessageSource;
+    public ReloadableResourceBundleMessageSource messageSource() {
+        ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource = new ReloadableResourceBundleMessageSource();
+        reloadableResourceBundleMessageSource.setBasename("classpath:i18n/messages");
+        //30 Minutes
+        reloadableResourceBundleMessageSource.setCacheSeconds(1800);
+        return reloadableResourceBundleMessageSource;
     }
 }

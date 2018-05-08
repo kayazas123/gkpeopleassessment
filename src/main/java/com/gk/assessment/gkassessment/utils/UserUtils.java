@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 public class UserUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserUtils.class);
@@ -22,8 +21,9 @@ public class UserUtils {
 
     /**
      * Creates a user with basic attributes set.
+     *
      * @param username The username.
-     * @param email The email.
+     * @param email    The email.
      * @return A User entity
      */
     public static User createBasicUser(String username, String email) {
@@ -40,7 +40,7 @@ public class UserUtils {
         return user;
     }
 
-    public static Role createBasicRole(RolesEnum rolesEnum){
+    public static Role createBasicRole(RolesEnum rolesEnum) {
         return new Role(rolesEnum);
     }
 

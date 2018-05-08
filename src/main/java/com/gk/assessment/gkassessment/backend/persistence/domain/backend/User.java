@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +22,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 public class User implements Serializable, UserDetails {
 
-    /** The Serial Version UID for Serializable classes. */
+    /**
+     * The Serial Version UID for Serializable classes.
+     */
     private static final long serialVersionUID = 1L;
 
 
@@ -74,7 +77,6 @@ public class User implements Serializable, UserDetails {
     public String getUsername() {
         return username;
     }
-
 
 
     public void setUsername(String username) {
@@ -166,7 +168,6 @@ public class User implements Serializable, UserDetails {
     public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
-
 
 
     @Override

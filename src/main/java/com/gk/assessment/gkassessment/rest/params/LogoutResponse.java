@@ -6,16 +6,16 @@ package com.gk.assessment.gkassessment.rest.params;
 public class LogoutResponse {
 
     public LogoutResponse(final String token) {
-	this.token = token;
+        this.token = token;
     }
 
     private String token;
 
     public String getToken() {
-	return token;
+        return token;
     }
 
     public void setToken(final String token) {
-	this.token = token;
+        this.token = token;
     }
 }

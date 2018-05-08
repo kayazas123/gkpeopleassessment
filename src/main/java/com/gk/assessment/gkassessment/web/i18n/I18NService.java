@@ -1,6 +1,7 @@
 package com.gk.assessment.gkassessment.web.i18n;
 
 import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ public class I18NService {
     private MessageSource messageSource;
 
     public String getMessage(String messageId) {
-	LOG.info("Returning i18n text for messageId {}",messageId);
-	Locale locale = LocaleContextHolder.getLocale();
-	return getMessage(messageId,locale);
+        LOG.info("Returning i18n text for messageId {}", messageId);
+        Locale locale = LocaleContextHolder.getLocale();
+        return getMessage(messageId, locale);
     }
 
-    public String getMessage(String messageId,Locale locale){
-	return messageSource.getMessage(messageId,null,locale);
+    public String getMessage(String messageId, Locale locale) {
+        return messageSource.getMessage(messageId, null, locale);
     }
 }

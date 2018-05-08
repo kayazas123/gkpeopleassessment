@@ -12,24 +12,24 @@ public class LoginRequest {
     }
 
     public LoginRequest(final String userName, final String passWord) {
-	super();
-	this.userName = userName;
-	this.passWord = passWord;
+        super();
+        this.userName = userName;
+        this.passWord = passWord;
     }
 
     public String getUserName() {
-	return userName;
+        return userName;
     }
 
     public void setUserName(final String userName) {
-	this.userName = userName;
+        this.userName = userName;
     }
 
     public String getPassWord() {
-	return passWord;
+        return passWord;
     }
 
     public void setPassWord(final String passWord) {
-	this.passWord = passWord;
+        this.passWord = passWord;
     }
 }

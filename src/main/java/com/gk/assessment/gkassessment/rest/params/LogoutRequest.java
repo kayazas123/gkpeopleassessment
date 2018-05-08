@@ -7,10 +7,10 @@ public class LogoutRequest {
     private String token;
 
     public String getToken() {
-	return token;
+        return token;
     }
 
     public void setToken(final String token) {
-	this.token = token;
+        this.token = token;
     }
 }

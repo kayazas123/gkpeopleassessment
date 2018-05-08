@@ -1,8 +1,10 @@
 package com.gk.assessment.gkassessment.web.controllers;
 
 import com.gk.assessment.gkassessment.registry.UsersSessionRegistry;
+
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,15 @@ public class UsersControler {
     @Autowired
     private UsersSessionRegistry userSessionRegistry;
 
-    @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public String getUserUrl(Model model,HttpServletRequest request){
-	if( request != null && request.getUserPrincipal() != null && request.getUserPrincipal().getName() != null) {
-	    userSessionRegistry.removePreviousActiveSessionsForUser(request.getUserPrincipal().getName(), RequestContextHolder.currentRequestAttributes().getSessionId());
-	}
-	List<SessionInformation> activeSessions = userSessionRegistry.getActiveSessions();
-	LOG.info("Active sessions list="+activeSessions.size());
-	model.addAttribute("activeSessions", activeSessions);
-	model.addAttribute("hasSession", request.getSession(false) != null);
-	return USER_VIEW_NAME;
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String getUserUrl(Model model, HttpServletRequest request) {
+        if (request != null && request.getUserPrincipal() != null && request.getUserPrincipal().getName() != null) {
+            userSessionRegistry.removePreviousActiveSessionsForUser(request.getUserPrincipal().getName(), RequestContextHolder.currentRequestAttributes().getSessionId());
+        }
+        List<SessionInformation> activeSessions = userSessionRegistry.getActiveSessions();
+        LOG.info("Active sessions list=" + activeSessions.size());
+        model.addAttribute("activeSessions", activeSessions);
+        model.addAttribute("hasSession", request.getSession(false) != null);
+        return USER_VIEW_NAME;
     }
 }

@@ -14,8 +14,8 @@ public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
     public static final String LOGIN_VIEW_NAME = "user/login";
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login(){
-	return LOGIN_VIEW_NAME;
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return LOGIN_VIEW_NAME;
     }
 }

@@ -2,7 +2,9 @@ package com.gk.assessment.gkassessment.backend.persistence.repositories;
 
 
 import com.gk.assessment.gkassessment.backend.persistence.domain.backend.User;
+
 import java.util.stream.Stream;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     /**
      * Returns a User given a username or null if not found.
+     *
      * @param username The username
      * @return a User given a username or null if not found.
      */
@@ -21,6 +24,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     /**
      * Returns a User for the given email or null if none was found.
+     *
      * @param email The user's email
      * @return a User for the given email or null if none was found.
      */

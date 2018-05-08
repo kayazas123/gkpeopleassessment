@@ -15,42 +15,42 @@ public class UsersResponse {
     private String phoneNumber;
 
     public String getUserName() {
-	return userName;
+        return userName;
     }
 
     public void setUserName(final String userName) {
-	this.userName = userName;
+        this.userName = userName;
     }
 
     public String getFirstName() {
-	return firstName;
+        return firstName;
     }
 
     public void setFirstName(final String firstName) {
-	this.firstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-	return lastName;
+        return lastName;
     }
 
     public void setLastName(final String lastName) {
-	this.lastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getEmailAddress() {
-	return emailAddress;
+        return emailAddress;
     }
 
     public void setEmailAddress(final String emailAddress) {
-	this.emailAddress = emailAddress;
+        this.emailAddress = emailAddress;
     }
 
     public String getPhoneNumber() {
-	return phoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(final String phoneNumber) {
-	this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 }

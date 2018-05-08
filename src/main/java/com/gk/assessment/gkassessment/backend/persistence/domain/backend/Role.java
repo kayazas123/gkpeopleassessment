@@ -1,6 +1,7 @@
 package com.gk.assessment.gkassessment.backend.persistence.domain.backend;
 
 import com.gk.assessment.gkassessment.backend.enums.RolesEnum;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,9 @@ import javax.persistence.OneToMany;
 @Entity
 public class Role implements Serializable {
 
-    /** The Serial Version UID for Serializable classes. */
+    /**
+     * The Serial Version UID for Serializable classes.
+     */
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -30,7 +33,8 @@ public class Role implements Serializable {
     }
 
     /**
-     * Full constructor. 
+     * Full constructor.
+     *
      * @param rolesEnum
      */
     public Role(RolesEnum rolesEnum) {

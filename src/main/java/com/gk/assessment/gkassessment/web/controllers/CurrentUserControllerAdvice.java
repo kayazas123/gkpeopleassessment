@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 /**
  * Created by AYAZ on 16/04/2018.
  */
+//Global code which will be available for wide range of controllers
 @ControllerAdvice
 public class CurrentUserControllerAdvice {
     private static final Logger LOG = LoggerFactory.getLogger(CurrentUserControllerAdvice.class);
 
     @ModelAttribute("currentUser")
     public String getCurrentUser(Authentication authentication) {
-	String username = "";
-	UserDetails userDetails = (authentication == null) ? null : (UserDetails) authentication.getPrincipal();
-	if(userDetails != null && userDetails.getUsername() != null){
-	    username =  userDetails.getUsername();
-	}
-	return username;
+        String username = "";
+        UserDetails userDetails = (authentication == null) ? null : (UserDetails) authentication.getPrincipal();
+        if (userDetails != null && userDetails.getUsername() != null) {
+            username = userDetails.getUsername();
+        }
+        return username;
     }
 }

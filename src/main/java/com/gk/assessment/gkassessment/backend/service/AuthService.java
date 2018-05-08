@@ -2,6 +2,7 @@ package com.gk.assessment.gkassessment.backend.service;
 
 
 import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -20,20 +21,20 @@ public class AuthService implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication)
-	throws AuthenticationException {
-	LOG.debug("Authenticating {}",authentication);
-	String name = authentication.getName();
-	String password = authentication.getCredentials().toString();
+            throws AuthenticationException {
+        LOG.debug("Authenticating {}", authentication);
+        String name = authentication.getName();
+        String password = authentication.getCredentials().toString();
 
-	return new UsernamePasswordAuthenticationToken(
-		name, password, new ArrayList<>());
+        return new UsernamePasswordAuthenticationToken(
+                name, password, new ArrayList<>());
 
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-	return authentication.equals(
-	    UsernamePasswordAuthenticationToken.class);
+        return authentication.equals(
+                UsernamePasswordAuthenticationToken.class);
     }
 
 }

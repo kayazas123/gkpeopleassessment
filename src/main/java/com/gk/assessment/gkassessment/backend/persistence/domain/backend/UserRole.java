@@ -8,12 +8,15 @@ import java.io.Serializable;
 @Table(name = "user_role")
 public class UserRole implements Serializable {
 
-    /** The Serial Version UID for Serializable classes. */
+    /**
+     * The Serial Version UID for Serializable classes.
+     */
     private static final long serialVersionUID = 1L;
 
     public UserRole() {
 
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -77,9 +80,9 @@ public class UserRole implements Serializable {
     @Override
     public String toString() {
         return "UserRole{" +
-            "id=" + id +
-            ", user=" + user +
-            ", role=" + role +
-            '}';
+                "id=" + id +
+                ", user=" + user +
+                ", role=" + role +
+                '}';
     }
 }

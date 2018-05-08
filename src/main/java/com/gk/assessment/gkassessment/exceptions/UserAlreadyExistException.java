@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserAlreadyExistException extends RuntimeException {
 
     public UserAlreadyExistException(final String message) {
-	super(message);
+        super(message);
     }
 
 }
